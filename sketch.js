@@ -3,8 +3,8 @@ let height = 800;
 
 let circleArray = [];
 
-const ARRAY_LENGTH = 20;
-const MAGNITUDE = 100; //probably not an constant, if i want to have more than one orbit
+const ARRAY_LENGTH = 20; //probably not an constant, if i want to have more than one orbit
+const MAGNITUDE = 100; //  --||-- same
 
 let orbitArray = [];
 
@@ -26,16 +26,7 @@ function setup() {
         MAGNITUDE / 4,
         circleArray[i]
       );
-
-      // let orbXpos = sin((i / arrayLength) * TWO_PI) * 40;
-      // let orbYpos = cos((i / arrayLength) * TWO_PI) * 40;
-
-      // circleArray[i] = [orbXpos, orbYpos];
     }
-    // let orbXpos = sin((i / arrayLength) * TWO_PI) * 40;
-    // let orbYpos = cos((i / arrayLength) * TWO_PI) * 40;
-
-    // circleArray[i] = [orbXpos, orbYpos];
   }
 }
 

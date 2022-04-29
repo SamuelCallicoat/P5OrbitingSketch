@@ -1,8 +1,8 @@
 class OrbitingOrb {
   constructor(trigArrayPos, magnitude, originObject) {
-    this.x = sin(trigArrayPos * TWO_PI) * magnitude;
-    this.y = cos(trigArrayPos * TWO_PI) * magnitude;
     this.originalTrigPos = trigArrayPos * TWO_PI;
+    this.x = sin(this.originalTrigPos) * magnitude;
+    this.y = cos(this.originalTrigPos) * magnitude;
     this.magnitude = magnitude;
 
     this.originObject = originObject;
