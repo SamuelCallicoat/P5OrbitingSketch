@@ -6,8 +6,8 @@ let FRAMES_PER_SINE_CYCLE;
 const allArrays = [];
 let isSavingGif = false;
 const BASE_ARRAY_LENGTH = 20;
-const BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
-const BASE_SIZE = CANVAS_WIDTH / 45;
+let BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
+let BASE_SIZE = CANVAS_WIDTH / 45;
 let gif_index = 0;
 let time = 0.0001;
 let startingRecordingFrame;
@@ -49,7 +49,7 @@ function setup() {
 function draw() {
   // TODO: make a somewhat reasonable screen resizing function
   //       Also need to update the translation of screen center, if i want it to work
-  //screenResize();
+  screenResize();
   updateFramesPerCycle();
   originObject.x = xPosCenter;
   originObject.y = yPosCenter;
@@ -145,9 +145,13 @@ function createSliders() {
 }
 
 function screenResize() {
-  if (windowWidth > 600) {
-    CANVAS_WIDTH = windowWidth;
-    CANVAS_HEIGHT = windowWidth;
+  if (windowWidth < 600) {
+    CANVAS_WIDTH = windowWidth - 10;
+    CANVAS_HEIGHT = windowWidth - 10;
+    xPosCenter = CANVAS_WIDTH / 2;
+    yPosCenter = CANVAS_HEIGHT / 2;
+    BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
+    BASE_SIZE = CANVAS_WIDTH / 45;
   }
 
   resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
