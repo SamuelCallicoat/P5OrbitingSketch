@@ -12,8 +12,8 @@ let gif_index = 0;
 let time = 0.0001;
 let startingRecordingFrame;
 let notStartedSavingGif = true;
-const xPosCenter = CANVAS_WIDTH / 2;
-const yPosCenter = CANVAS_HEIGHT / 2;
+let xPosCenter = CANVAS_WIDTH / 2;
+let yPosCenter = CANVAS_HEIGHT / 2;
 let originObject = { x: xPosCenter, y: yPosCenter };
 
 let speedSlider;
@@ -50,6 +50,8 @@ function draw() {
   //       Also need to update the translation of screen center, if i want it to work
   // screenResize();
   updateFramesPerCycle();
+  originObject.x = xPosCenter;
+  originObject.y = yPosCenter;
   background((sin(time + PI) + 1) * 100);
 
   if (isSavingGif && notStartedSavingGif) {
@@ -150,6 +152,7 @@ function screenResize() {
     CANVAS_WIDTH = windowWidth * 0.8;
     CANVAS_HEIGHT = windowWidth * 0.8;
   }
+
   resizeCanvas(windowWidth, windowHeight);
 }
 
