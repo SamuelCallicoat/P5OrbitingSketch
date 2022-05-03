@@ -13,6 +13,7 @@ class OrbitingOrb {
     this.originObject = originObject;
 
     this.isChild = originObject instanceof OrbitingOrb; // FIXME: returning true, even when not.
+    //                                                             possibly context error?
   }
 
   update(timeStep, magnitude = this.magnitude, size = this.size) {
@@ -24,6 +25,11 @@ class OrbitingOrb {
   }
 
   draw() {
+    let scaling = map(this.x - this.originObject.x, -100, 100, 40, 180);
+    let c = color(scaling, scaling, scaling);
+    noStroke();
+    fill(c);
+    //noStroke();
     circle(this.x, this.y, this.size);
   }
 }
