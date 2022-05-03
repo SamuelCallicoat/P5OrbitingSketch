@@ -41,11 +41,7 @@ function setup() {
 }
 
 function draw() {
-  background(
-    (sin(time + PI) + 1) * 100,
-    (sin(time + PI) + 1) * 100,
-    (sin(time + PI) + 1) * 100
-  );
+  background((sin(time + PI) + 1) * 100);
 
   if (isSavingGif && notStartedSavingGif) {
     startingRecordingFrame = frameCount;
@@ -55,15 +51,11 @@ function draw() {
   // originObject.x += sin(time);
   // originObject.y += cos(time);
   noStroke();
-  fill((sin(time) + 1) * 100, (sin(time) + 1) * 100, (sin(time) + 1) * 100);
+  fill((sin(time) + 1) * 100);
   circle(originObject.x, originObject.y, BASE_SIZE * 4);
-  fill(
-    (sin(time + PI) + 1) * 100,
-    (sin(time + PI) + 1) * 100,
-    (sin(time + PI) + 1) * 100
-  );
+  fill((sin(time + PI) + 1) * 100);
   circle(
-    originObject.x + sin(time) * BASE_SIZE * 3,
+    originObject.x + sin(time) * BASE_SIZE * 4,
     originObject.y,
     BASE_SIZE * 4
   );
@@ -75,7 +67,7 @@ function draw() {
         orb.update(
           sin(time),
           sin(time) * BASE_SIZE + BASE_SIZE * 3,
-          (cos(time) * BASE_SIZE) / 3 + BASE_SIZE / 2
+          (cos(time) * BASE_SIZE) / 4 + BASE_SIZE / 2
         );
       } else orb.update(time);
       orb.draw();
