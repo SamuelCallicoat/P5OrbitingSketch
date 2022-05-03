@@ -27,7 +27,7 @@ class OrbitingOrb {
   draw() {
     let scaling = map(this.x - this.originObject.x, -100, 100, 40, 180);
     let c = color(scaling, scaling, scaling);
-    strokeWeight(this.y * 0.001);
+    noStroke();
     fill(c);
     //noStroke();
     circle(this.x, this.y, this.size);

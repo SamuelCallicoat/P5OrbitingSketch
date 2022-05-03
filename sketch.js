@@ -1,7 +1,7 @@
 let CANVAS_WIDTH = 600;
 let CANVAS_HEIGHT = 600;
 
-const TIME_STEP = 0.02;
+let TIME_STEP = 0.02;
 let FRAMES_PER_SINE_CYCLE;
 const allArrays = [];
 let isSavingGif = false;
@@ -23,16 +23,17 @@ let capturer;
 let canvas;
 var container;
 function setup() {
-  FRAMES_PER_SINE_CYCLE = Math.round(TWO_PI / TIME_STEP);
   canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   createSliders();
-  //frameRate(60);
+  updateFramesPerCycle();
+
   let firstOrbitArray = createOrbitArray(
     20,
     originObject,
     BASE_MAGNITUDE,
     BASE_SIZE * 2
   );
+
   for (orb of firstOrbitArray) {
     createOrbitArray(5, orb, BASE_MAGNITUDE * 1.5, BASE_SIZE / 2);
   }
@@ -48,7 +49,7 @@ function draw() {
   // TODO: make a somewhat reasonable screen resizing function
   //       Also need to update the translation of screen center, if i want it to work
   // screenResize();
-
+  updateFramesPerCycle();
   background((sin(time + PI) + 1) * 100);
 
   if (isSavingGif && notStartedSavingGif) {
@@ -74,11 +75,12 @@ function draw() {
       if (orb.originObject instanceof OrbitingOrb) {
         orb.update(
           sin(time),
-          sin(time) * BASE_SIZE + BASE_SIZE * magnitudeSlider2.value(),
+          sin(time) * BASE_MAGNITUDE +
+            BASE_MAGNITUDE * magnitudeSlider2.value(),
           (cos(time) * BASE_SIZE * sizeSlider2.value()) / 2 +
             BASE_SIZE * sizeSlider2.value()
         );
-      } else orb.update(time, BASE_SIZE * magnitudeSlider1.value());
+      } else orb.update(time, BASE_MAGNITUDE * magnitudeSlider1.value());
       orb.draw();
     }
   }
@@ -91,7 +93,7 @@ function draw() {
     notStartedSavingGif = true;
     isSavingGif = false;
   }
-  time += Math.log(speedSlider.value() + 1) / 2;
+  time += TIME_STEP;
 }
 Math.log();
 function createOrbitArray(numOfOrbs, centerObject, magnitude, size) {
@@ -111,20 +113,32 @@ function createOrbitArray(numOfOrbs, centerObject, magnitude, size) {
 }
 
 function createSliders() {
-  speedSlider = createSlider(0.001, 0.07, 0.001, 0.001);
-  speedSlider.position(0, CANVAS_HEIGHT + 20);
+  // TODO all the
 
-  magnitudeSlider1 = createSlider(0, 20, 3, 0.1);
-  magnitudeSlider2 = createSlider(0, 6, 3, 0.1);
+  speedSlider = createSlider(1.001, 1.07, 0.045, 0.001);
+  speedSlider.position(0, CANVAS_HEIGHT + 20);
+  speedSlider.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+
+  magnitudeSlider1 = createSlider(0, 1, 0.5, 0.01);
+  magnitudeSlider2 = createSlider(0, 1, 0.5, 0.1);
   magnitudeSlider1.position(0, CANVAS_HEIGHT + 40);
   magnitudeSlider2.position(0, CANVAS_HEIGHT + 60);
+  magnitudeSlider1.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+  magnitudeSlider2.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
 
   sizeSlider0 = createSlider(0, 45, 3, 0.1);
   sizeSlider1 = createSlider(0, 20, 3, 0.1);
   sizeSlider2 = createSlider(0, 3, 1, 0.1);
-  sizeSlider0.position(150, CANVAS_HEIGHT + 20);
-  sizeSlider1.position(150, CANVAS_HEIGHT + 40);
-  sizeSlider2.position(150, CANVAS_HEIGHT + 60);
+  sizeSlider0.position(xPosCenter + 10, CANVAS_HEIGHT + 20);
+  sizeSlider1.position(xPosCenter + 10, CANVAS_HEIGHT + 40);
+  sizeSlider2.position(xPosCenter + 10, CANVAS_HEIGHT + 60);
+  sizeSlider0.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+  sizeSlider1.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+  sizeSlider2.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+
+  gifButton = createButton('Save GIF');
+  gifButton.mousePressed(() => (isSavingGif = true));
+  gifButton.position(xPosCenter - 40, CANVAS_HEIGHT + 80);
 }
 
 function screenResize() {
@@ -137,4 +151,9 @@ function screenResize() {
     CANVAS_HEIGHT = windowWidth * 0.8;
   }
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function updateFramesPerCycle() {
+  TIME_STEP = Math.log(speedSlider.value()) / 3;
+  FRAMES_PER_SINE_CYCLE = Math.round(TWO_PI / TIME_STEP);
 }
