@@ -24,6 +24,7 @@ let canvas;
 var container;
 function setup() {
   canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  screenResize();
   createSliders();
   updateFramesPerCycle();
 
@@ -48,7 +49,7 @@ function setup() {
 function draw() {
   // TODO: make a somewhat reasonable screen resizing function
   //       Also need to update the translation of screen center, if i want it to work
-  screenResize();
+  //screenResize();
   updateFramesPerCycle();
   originObject.x = xPosCenter;
   originObject.y = yPosCenter;
