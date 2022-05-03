@@ -48,7 +48,7 @@ function setup() {
 function draw() {
   // TODO: make a somewhat reasonable screen resizing function
   //       Also need to update the translation of screen center, if i want it to work
-  // screenResize();
+  screenResize();
   updateFramesPerCycle();
   originObject.x = xPosCenter;
   originObject.y = yPosCenter;
@@ -144,16 +144,12 @@ function createSliders() {
 }
 
 function screenResize() {
-  if (windowHeight < windowWidth) {
-    CANVAS_WIDTH = windowHeight * 0.8;
-    CANVAS_HEIGHT = windowHeight * 0.8;
-  }
-  if (windowHeight >= windowWidth) {
-    CANVAS_WIDTH = windowWidth * 0.8;
-    CANVAS_HEIGHT = windowWidth * 0.8;
+  if (windowWidth > 600) {
+    CANVAS_WIDTH = windowWidth;
+    CANVAS_HEIGHT = windowWidth;
   }
 
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 function updateFramesPerCycle() {
