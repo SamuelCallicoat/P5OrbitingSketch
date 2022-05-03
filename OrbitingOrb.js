@@ -13,6 +13,7 @@ class OrbitingOrb {
     this.originObject = originObject;
 
     this.isChild = originObject instanceof OrbitingOrb; // FIXME: returning true, even when not.
+    //                                                             possibly context error?
   }
 
   update(timeStep, magnitude = this.magnitude, size = this.size) {

@@ -1,41 +1,52 @@
-const width = 270;
-const height = 270;
+const CANVAS_WIDTH = 200;
+const CANVAS_HEIGHT = 200;
 
-const TIME_STEP = 0.01;
+const TIME_STEP = 0.02;
 let FRAMES_PER_SINE_CYCLE;
-let allArrays = [];
+const allArrays = [];
 let isSavingGif = false;
 const BASE_ARRAY_LENGTH = 20;
-const BASE_MAGNITUDE = 100;
-const BASE_SIZE = 6;
+const BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
+const BASE_SIZE = CANVAS_WIDTH / 45;
 let gif_index = 0;
 let time = 0.0001;
 let startingRecordingFrame;
 let notStartedSavingGif = true;
-const xPosCenter = width / 2;
-const yPosCenter = height / 2;
+const xPosCenter = CANVAS_WIDTH / 2;
+const yPosCenter = CANVAS_HEIGHT / 2;
 let originObject = { x: xPosCenter, y: yPosCenter };
 
 let capturer;
 let canvas;
 var container;
 function setup() {
-  FRAMES_PER_SINE_CYCLE = Math.floor(TWO_PI / TIME_STEP);
-  canvas = createCanvas(width, height);
-  frameRate(60);
-  let firstOrbitArray = createOrbitArray(20, originObject, BASE_MAGNITUDE, 10);
+  FRAMES_PER_SINE_CYCLE = Math.round(TWO_PI / TIME_STEP);
+  canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  //frameRate(60);
+  let firstOrbitArray = createOrbitArray(
+    20,
+    originObject,
+    BASE_MAGNITUDE,
+    BASE_SIZE * 2
+  );
   for (orb of firstOrbitArray) {
-    createOrbitArray(5, orb, 10, 3);
+    createOrbitArray(5, orb, BASE_MAGNITUDE * 1.5, BASE_SIZE / 2);
   }
   container = select('#defaultCanvas0');
   capturer = new CCapture({
-    format: 'png',
+    format: 'gif',
     name: 'orbit_gif',
+    workersPath: '/',
   });
 }
 
 function draw() {
-  background(220);
+  background(
+    (sin(time + PI) + 1) * 100,
+    (sin(time + PI) + 1) * 100,
+    (sin(time + PI) + 1) * 100
+  );
+
   if (isSavingGif && notStartedSavingGif) {
     startingRecordingFrame = frameCount;
     capturer.start();
@@ -45,13 +56,27 @@ function draw() {
   // originObject.y += cos(time);
   noStroke();
   fill((sin(time) + 1) * 100, (sin(time) + 1) * 100, (sin(time) + 1) * 100);
-  circle(originObject.x, originObject.y, 20);
+  circle(originObject.x, originObject.y, BASE_SIZE * 4);
+  fill(
+    (sin(time + PI) + 1) * 100,
+    (sin(time + PI) + 1) * 100,
+    (sin(time + PI) + 1) * 100
+  );
+  circle(
+    originObject.x + sin(time) * BASE_SIZE * 3,
+    originObject.y,
+    BASE_SIZE * 4
+  );
   // line(xPosCenter , yPosCenter, originObject.x, originObject.y);
 
   for (array of allArrays) {
     for (orb of array) {
       if (orb.originObject instanceof OrbitingOrb) {
-        orb.update(sin(time), sin(time) * 5 + 20, cos(time) * 4 + 3);
+        orb.update(
+          sin(time),
+          sin(time) * BASE_SIZE + BASE_SIZE * 3,
+          (cos(time) * BASE_SIZE) / 3 + BASE_SIZE / 2
+        );
       } else orb.update(time);
       orb.draw();
     }
@@ -62,6 +87,8 @@ function draw() {
     console.log('finished at frame: ' + frameCount);
     capturer.stop();
     capturer.save();
+    notStartedSavingGif = true;
+    isSavingGif = false;
   }
   time += TIME_STEP;
 }
