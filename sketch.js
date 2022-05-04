@@ -1,11 +1,12 @@
+// TODO: Change the consts i can to
+
 let CANVAS_WIDTH = 600;
 let CANVAS_HEIGHT = 600;
+const BASE_ARRAY_LENGTH = 20;
 
 let TIME_STEP = 0.02;
-let FRAMES_PER_SINE_CYCLE;
 const allArrays = [];
-let isSavingGif = false;
-const BASE_ARRAY_LENGTH = 20;
+let FRAMES_PER_SINE_CYCLE;
 let BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
 let BASE_SIZE = CANVAS_WIDTH / 45;
 let gif_index = 0;
@@ -16,6 +17,7 @@ let xPosCenter = CANVAS_WIDTH / 2;
 let yPosCenter = CANVAS_HEIGHT / 2;
 let originObject = { x: xPosCenter, y: yPosCenter };
 
+let isSavingGif = false;
 let speedSlider;
 let magnitudeSlider1;
 
@@ -27,9 +29,10 @@ function setup() {
   screenResize();
   createSliders();
   updateFramesPerCycle();
-
+  pixelDensity(0.7);
   let firstOrbitArray = createOrbitArray(
-    20,
+    BASE_ARRAY_LENGTH,
+
     originObject,
     BASE_MAGNITUDE,
     BASE_SIZE * 2
@@ -47,8 +50,6 @@ function setup() {
 }
 
 function draw() {
-  // TODO: make a somewhat reasonable screen resizing function
-  //       Also need to update the translation of screen center, if i want it to work
   screenResize();
   updateFramesPerCycle();
   originObject.x = xPosCenter;
@@ -60,8 +61,7 @@ function draw() {
     capturer.start();
     notStartedSavingGif = false;
   }
-  // originObject.x += sin(time);
-  // originObject.y += cos(time);
+
   noStroke();
   fill((sin(time) + 1) * 100);
   circle(originObject.x, originObject.y, BASE_SIZE * sizeSlider0.value());
@@ -71,7 +71,6 @@ function draw() {
     originObject.y,
     BASE_SIZE * sizeSlider0.value()
   );
-  // line(xPosCenter , yPosCenter, originObject.x, originObject.y);
 
   for (array of allArrays) {
     for (orb of array) {
@@ -116,8 +115,6 @@ function createOrbitArray(numOfOrbs, centerObject, magnitude, size) {
 }
 
 function createSliders() {
-  // TODO all the
-
   speedSlider = createSlider(1.001, 1.07, 0.045, 0.001);
   speedSlider.position(0, CANVAS_HEIGHT + 20);
   speedSlider.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
@@ -152,6 +149,7 @@ function screenResize() {
     yPosCenter = CANVAS_HEIGHT / 2;
     BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
     BASE_SIZE = CANVAS_WIDTH / 45;
+    pixelDensity(0.5);
   }
 
   resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
