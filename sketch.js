@@ -1,5 +1,3 @@
-// TODO: Change the consts i can to
-
 let CANVAS_WIDTH = 600;
 let CANVAS_HEIGHT = 600;
 const BASE_ARRAY_LENGTH = 20;
@@ -20,6 +18,11 @@ let originObject = { x: xPosCenter, y: yPosCenter };
 let isSavingGif = false;
 let speedSlider;
 let magnitudeSlider1;
+let magnitudeSlider2;
+let sizeSlider0;
+let sizeSlider1;
+let sizeSlider2;
+let resolutionSlider;
 
 let capturer;
 let canvas;
@@ -82,7 +85,12 @@ function draw() {
           (cos(time) * BASE_SIZE * sizeSlider2.value()) / 2 +
             BASE_SIZE * sizeSlider2.value()
         );
-      } else orb.update(time, BASE_MAGNITUDE * magnitudeSlider1.value());
+      } else
+        orb.update(
+          time,
+          BASE_MAGNITUDE * magnitudeSlider1.value(),
+          BASE_SIZE * sizeSlider1.value()
+        );
       orb.draw();
     }
   }
@@ -97,7 +105,7 @@ function draw() {
   }
   time += TIME_STEP;
 }
-Math.log();
+
 function createOrbitArray(numOfOrbs, centerObject, magnitude, size) {
   const createdArray = [];
 
@@ -138,7 +146,11 @@ function createSliders() {
 
   gifButton = createButton('Save GIF');
   gifButton.mousePressed(() => (isSavingGif = true));
-  gifButton.position(xPosCenter - 40, CANVAS_HEIGHT + 80);
+  gifButton.position(xPosCenter - 40, CANVAS_HEIGHT + 85);
+
+  resolutionSlider = createSlider(0.2, 1, 0.6, 0.05);
+  resolutionSlider.position(xPosCenter - CANVAS_WIDTH / 4, CANVAS_HEIGHT + 110);
+  resolutionSlider.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
 }
 
 function screenResize() {
@@ -149,9 +161,8 @@ function screenResize() {
     yPosCenter = CANVAS_HEIGHT / 2;
     BASE_MAGNITUDE = CANVAS_WIDTH / 2.5;
     BASE_SIZE = CANVAS_WIDTH / 45;
-    pixelDensity(0.5);
   }
-
+  pixelDensity(resolutionSlider?.value() || 0.5);
   resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
