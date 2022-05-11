@@ -77,19 +77,18 @@ function draw() {
 
   for (array of allArrays) {
     for (orb of array) {
-      if (orb.originObject instanceof OrbitingOrb) {
-        orb.update(
-          sin(time),
-          sin(time) * BASE_MAGNITUDE +
-            BASE_MAGNITUDE * magnitudeSlider2.value(),
-          (cos(time) * BASE_SIZE * sizeSlider2.value()) / 2 +
-            BASE_SIZE * sizeSlider2.value()
-        );
-      } else
+      if (!(orb.originObject instanceof OrbitingOrb)) {
         orb.update(
           time,
           BASE_MAGNITUDE * magnitudeSlider1.value(),
           BASE_SIZE * sizeSlider1.value()
+        );
+      } else
+        orb.update(
+          sin(time),
+          sin(time) * BASE_MAGNITUDE * magnitudeSlider2.value(),
+          (cos(time) * BASE_SIZE * sizeSlider2.value()) / 2 +
+            BASE_SIZE * sizeSlider2.value()
         );
       orb.draw();
     }
