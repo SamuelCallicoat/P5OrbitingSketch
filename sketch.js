@@ -14,6 +14,10 @@ let notStartedSavingGif = true;
 let xPosCenter = CANVAS_WIDTH / 2;
 let yPosCenter = CANVAS_HEIGHT / 2;
 let originObject = { x: xPosCenter, y: yPosCenter };
+let grayScaleMode = false;
+let HSLmode = true;
+let HSLVal1 = 100;
+let HSLVal2 = 200;
 
 let isSavingGif = false;
 let speedSlider;
@@ -23,6 +27,9 @@ let sizeSlider0;
 let sizeSlider1;
 let sizeSlider2;
 let resolutionSlider;
+let colorModeBtn;
+let hslSlider1;
+let hslSlider2;
 
 let capturer;
 let canvas;
@@ -57,7 +64,6 @@ function draw() {
   updateFramesPerCycle();
   originObject.x = xPosCenter;
   originObject.y = yPosCenter;
-  background((sin(time + PI) + 1) * 100);
 
   if (isSavingGif && notStartedSavingGif) {
     startingRecordingFrame = frameCount;
@@ -66,14 +72,33 @@ function draw() {
   }
 
   noStroke();
-  fill((sin(time) + 1) * 100);
-  circle(originObject.x, originObject.y, BASE_SIZE * sizeSlider0.value());
-  fill((sin(time + PI) + 1) * 100);
-  circle(
-    originObject.x + sin(time) * BASE_SIZE * sizeSlider0.value(),
-    originObject.y,
-    BASE_SIZE * sizeSlider0.value()
-  );
+  if (grayScaleMode === true) {
+    background((sin(time + PI) + 1) * 100);
+    fill((sin(time) + 1) * 100);
+    circle(originObject.x, originObject.y, BASE_SIZE * sizeSlider0.value());
+    fill((sin(time + PI) + 1) * 100);
+    circle(
+      originObject.x + sin(time) * BASE_SIZE * sizeSlider0.value(),
+      originObject.y,
+      BASE_SIZE * sizeSlider0.value()
+    );
+  }
+  if (HSLmode === true) {
+    let minColor = mapColors(hslSlider1.value(), hslSlider2.value());
+    let maxColor = mapColors(hslSlider1.value(), hslSlider2.value(), PI);
+
+    background(maxColor);
+    fill(minColor);
+
+    circle(originObject.x, originObject.y, BASE_SIZE * sizeSlider0.value());
+    fill(maxColor);
+
+    circle(
+      originObject.x + sin(time) * BASE_SIZE * sizeSlider0.value(),
+      originObject.y,
+      BASE_SIZE * sizeSlider0.value()
+    );
+  }
 
   for (array of allArrays) {
     for (orb of array) {
@@ -90,7 +115,9 @@ function draw() {
           (cos(time) * BASE_SIZE * sizeSlider2.value()) / 2 +
             BASE_SIZE * sizeSlider2.value()
         );
-      orb.draw();
+      if (HSLmode === true)
+        orb.draw('HSL', hslSlider1.value(), hslSlider2.value());
+      if (grayScaleMode === true) orb.draw('greyScale');
     }
   }
 
@@ -146,6 +173,21 @@ function createSliders() {
   gifButton = createButton('Save GIF');
   gifButton.mousePressed(() => (isSavingGif = true));
   gifButton.position(xPosCenter - 40, CANVAS_HEIGHT + 85);
+  colorModeBtn = createButton('Color Mode');
+  colorModeBtn.mousePressed(() => {
+    HSLmode = !HSLmode;
+    grayScaleMode = !grayScaleMode;
+  });
+  colorModeBtn.position(xPosCenter - 40, CANVAS_HEIGHT + 140);
+
+  hslSlider1 = createSlider(0, 360, 199, 0.1);
+  hslSlider2 = createSlider(0, 360, 100, 0.1);
+
+  hslSlider1.position(10, CANVAS_HEIGHT + 160);
+  hslSlider2.position(10, CANVAS_HEIGHT + 180);
+
+  hslSlider1.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+  hslSlider2.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
 
   resolutionSlider = createSlider(0.2, 1, 0.6, 0.05);
   resolutionSlider.position(xPosCenter - CANVAS_WIDTH / 4, CANVAS_HEIGHT + 110);
@@ -168,4 +210,18 @@ function screenResize() {
 function updateFramesPerCycle() {
   TIME_STEP = Math.log(speedSlider.value()) / 3;
   FRAMES_PER_SINE_CYCLE = Math.round(TWO_PI / TIME_STEP);
+}
+
+function mapColors(HSLInput1, HSLInput2, phase = 0) {
+  return `hsb(${round(
+    lerp(HSLInput1, HSLInput2, (sin(time + phase) + 1) * 0.5)
+  )},70%,70%)`;
+}
+
+function printColors(phase = 0) {
+  return `hsb(${lerp(
+    hslSlider1.value(),
+    hslSlider2.value(),
+    (sin(time + phase) + 1) * 0.5
+  )},100%,100%)`;
 }
