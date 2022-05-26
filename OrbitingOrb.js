@@ -24,9 +24,31 @@ class OrbitingOrb {
     this.y += cos(this.originalTrigPos + timeStep) * magnitude;
   }
 
-  draw() {
-    let scaling = map(this.x - this.originObject.x, -100, 100, 40, 180);
-    let c = color(scaling, scaling, scaling);
+  draw(colorMode = 'grayScale', HSLInput1 = undefined, HSLInput2 = undefined) {
+    let scaling;
+    let c;
+    switch (colorMode) {
+      case 'grayScale':
+        scaling = map(this.x - this.originObject.x, -100, 100, 40, 180);
+        if (scaling > 100) scaling = 100;
+        if (scaling < 0) scaling = 0;
+        c = color(scaling, scaling, scaling);
+        break;
+      case 'HSL':
+        scaling = scaling = map(this.x - this.originObject.x, -200, 200, 0, 1);
+        if (scaling > 1) scaling = 1;
+        if (scaling < 0) scaling = 0;
+        c = color(
+          `hsb(${round(lerp(HSLInput1, HSLInput2, scaling))}, 70%, 70%)`
+        );
+        break;
+      default:
+        scaling = map(this.x - this.originObject.x, -100, 100, 40, 180);
+        if (scaling > 100) scaling = 100;
+        if (scaling < 0) scaling = 0;
+        c = color(scaling, scaling, scaling);
+    }
+
     noStroke();
     fill(c);
     //noStroke();
