@@ -13,10 +13,20 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
     <title>Orbs Orbiting</title>
   </head>
   <body style="margin: 0">
+    <div id="canvas-container"></div>
+    <div id="interactives-container">
+      <div id="allSpeedAndSize-container">
+        <div class="slider-box" id="speed-slider-box"> <label> <input type="range" id="speedSlider" min="1.001" max ="1.07", value=0.045, step=0.001></div>
+        <div class="slider-box" id="size-0-slider-box"><input type="range" id="sizeSlider0" min="0" max ="45", value=3, step=0.1></div>
+        <div class="slider-box" id="size-1-slider-box"><input type="range" id="sizeSlider1" min="0" max ="20", value=3, step=0.01></div>
+        <div class="slider-box" id="size-2-slider-box"><input type="range" id="sizeSlider2"min="0" max ="3", value=1, step=0.01></div>
+        <div class="slider-box" id="magnitude-1-slider-box"><label> <input type="range" id="magnitudeSlider1"min="0" max ="1", value=0.2, step=0.01></div>
+        <div class="slider-box" id="magnitude-2-slider-box"><label> <input type="range" id="magnitudeSlider2"min="0" max ="1", value=0.2, step=0.01></div>
+      </div>
+    </div>
     <script src="sketch.js" async defer></script>
   </body>
 </html>

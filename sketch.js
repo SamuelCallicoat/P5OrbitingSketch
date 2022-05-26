@@ -14,8 +14,8 @@ let notStartedSavingGif = true;
 let xPosCenter = CANVAS_WIDTH / 2;
 let yPosCenter = CANVAS_HEIGHT / 2;
 let originObject = { x: xPosCenter, y: yPosCenter };
-let grayScaleMode = false;
-let HSLmode = true;
+let grayScaleMode = true;
+let HSLmode = false;
 let HSLVal1 = 100;
 let HSLVal2 = 200;
 
@@ -36,8 +36,9 @@ let canvas;
 var container;
 function setup() {
   canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  canvas.parent('canvas-container');
   screenResize();
-  createSliders();
+  sliderInit();
   updateFramesPerCycle();
   pixelDensity(0.7);
   let firstOrbitArray = createOrbitArray(
@@ -148,21 +149,31 @@ function createOrbitArray(numOfOrbs, centerObject, magnitude, size) {
   return createdArray;
 }
 
-function createSliders() {
+function sliderInit() {
   speedSlider = createSlider(1.001, 1.07, 0.045, 0.001);
-  speedSlider.position(0, CANVAS_HEIGHT + 20);
-  speedSlider.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
+  speedSlider = new p5.Element(document.getElementById('speedSlider'));
+  sizeSlider0 = new p5.Element(document.getElementById('sizeSlider0'));
+  sizeSlider1 = new p5.Element(document.getElementById('sizeSlider1'));
+  sizeSlider2 = new p5.Element(document.getElementById('sizeSlider2'));
+  magnitudeSlider1 = new p5.Element(
+    document.getElementById('magnitudeSlider1')
+  );
+  magnitudeSlider2 = new p5.Element(
+    document.getElementById('magnitudeSlider2')
+  );
+  // sizeSlider0 = createSlider(0, 45, 3, 0.1);
+  // sizeSlider1 = createSlider(0, 20, 3, 0.1);
+  // sizeSlider2 = createSlider(0, 3, 1, 0.1);
+  // magnitudeSlider1 = createSlider(0, 1, 0.5, 0.01);
+  // magnitudeSlider2 = createSlider(0, 1, 0.5, 0.1);
 
-  magnitudeSlider1 = createSlider(0, 1, 0.5, 0.01);
-  magnitudeSlider2 = createSlider(0, 1, 0.5, 0.1);
   magnitudeSlider1.position(0, CANVAS_HEIGHT + 40);
   magnitudeSlider2.position(0, CANVAS_HEIGHT + 60);
   magnitudeSlider1.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
   magnitudeSlider2.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
 
-  sizeSlider0 = createSlider(0, 45, 3, 0.1);
-  sizeSlider1 = createSlider(0, 20, 3, 0.1);
-  sizeSlider2 = createSlider(0, 3, 1, 0.1);
+  speedSlider.position(0, CANVAS_HEIGHT + 20);
+  speedSlider.style('width', CANVAS_WIDTH / 2 - 10 + 'px');
   sizeSlider0.position(xPosCenter + 10, CANVAS_HEIGHT + 20);
   sizeSlider1.position(xPosCenter + 10, CANVAS_HEIGHT + 40);
   sizeSlider2.position(xPosCenter + 10, CANVAS_HEIGHT + 60);
